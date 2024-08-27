@@ -7,7 +7,7 @@ import os
 def save_public_key(user, key):
     # Создание .ssh директории в случае отсутствия
     os.makedirs(f'/home/{user}/.ssh', exist_ok=True)
-    with open(f'/home/{user}/.ssh/received_key.pub', 'w') as file:
+    with open(f'/home/{user}/.ssh/authorized_keys', 'w') as file:
         file.write(key)
 
 
