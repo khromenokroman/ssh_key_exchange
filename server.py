@@ -1,22 +1,38 @@
 #!/usr/bin/python3
 import socket
 import argparse
-import os
 import signal
 import sys
 
 
 def get_public_key(user):
+    """
+    Fetches the public key of the provided user.
+
+    Parameters:
+    user (str): The name of the user.
+
+    Returns:
+    str: The public key of the user if found, else a message stating "Key not found".
+    """
     try:
         with open(f'/home/{user}/.ssh/id_rsa.pub', 'r') as file:
             public_key = file.read()
         return public_key
-    except FileNotFoundError:
-        return "Key not found"
+    except Exception as ex:
+        print(f"Error: {ex}")
+        sys.exit(-1)
 
 
 def start_server(port, user):
-    # Получение публичного ключа пользователя
+    """
+    Starts a server at the provided port and listens for incoming connections.
+    On receiving a connection, sends the public key of the user to the client.
+
+    Parameters:
+    port (int): The port number at which the server should run.
+    user (str): The name of the user whose public key should be sent.
+    """
     public_key = get_public_key(user)
 
     # Создание сокета
@@ -33,11 +49,9 @@ def start_server(port, user):
     signal.signal(signal.SIGINT, signal_handler)
 
     while True:
-        # Ожидание подключения клиента
         client, addr = server.accept()
         with client:
             print(f"Connected by {addr}")
-            # Отправка публичного ключа клиенту
             client.sendall(public_key.encode())
 
 if __name__ == "__main__":
