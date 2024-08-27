@@ -40,14 +40,9 @@ def start_server(port, user):
             # Отправка публичного ключа клиенту
             client.sendall(public_key.encode())
 
-
-def main():
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Send public key by server.")
     parser.add_argument("user", help="username to find public key")
     args = parser.parse_args()
 
     start_server(1993, args.user)
-
-
-if __name__ == "__main__":
-    main()

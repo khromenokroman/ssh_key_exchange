@@ -25,14 +25,11 @@ def get_public_key(ip, port, user):
     save_public_key(user, data)
 
 
-def main():
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Receive public key from server.")
     parser.add_argument("user", help="username to save received public key")
+    parser.add_argument("ip", help="IP address of the server")
+    parser.add_argument("port", type=int, help="Port of the server")
     args = parser.parse_args()
 
-    # Замените 'localhost' на IP вашего сервера, если он запущен на другой машине
-    get_public_key('localhost', 1993, args.user)
-
-
-if __name__ == "__main__":
-    main()
+    get_public_key(args.ip, args.port, args.user)
