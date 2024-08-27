@@ -6,9 +6,14 @@ import os
 
 def save_public_key(user, key):
     # Создание .ssh директории в случае отсутствия
-    os.makedirs(f'/home/{user}/.ssh', exist_ok=True)
-    with open(f'/home/{user}/.ssh/authorized_keys', 'w') as file:
-        file.write(key)
+    if user != 'root':
+        os.makedirs(f'/home/{user}/.ssh', exist_ok=True)
+        with open(f'/home/{user}/.ssh/authorized_keys', 'w') as file:
+            file.write(key)
+    else:
+        os.makedirs(f'/root/.ssh', exist_ok=True)
+        with open(f'/root/.ssh/authorized_keys', 'w') as file:
+            file.write(key)
 
 
 def get_public_key(ip, port, user):
